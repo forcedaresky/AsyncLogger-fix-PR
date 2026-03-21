@@ -16,8 +16,6 @@ public abstract class ClassLoaderHandler implements AutoCloseable {
     public final ClassLoader targetClassLoader;
     public final ClassLoader modClassLoader;
 
-    protected final Logger LOGGER = LogManager.getLogger();
-
     public ClassLoaderHandler(ClassLoader targetClassLoader, ClassLoader modClassLoader) {
         this.targetClassLoader = targetClassLoader;
         this.modClassLoader = modClassLoader;
