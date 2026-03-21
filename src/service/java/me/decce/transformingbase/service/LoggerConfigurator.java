@@ -1,7 +1,6 @@
 package me.decce.transformingbase.service;
 
 import me.decce.transformingbase.constants.Constants;
-import me.decce.transformingbase.core.AsyncLogger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.async.BasicAsyncLoggerContextSelector;
 import org.apache.logging.log4j.core.impl.Log4jContextFactory;

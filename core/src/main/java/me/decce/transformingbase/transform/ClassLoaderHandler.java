@@ -77,6 +77,16 @@ public abstract class ClassLoaderHandler implements AutoCloseable {
         }
     }
 
+    public void expandModuleReads(Module... modules) {
+        try {
+            for (Module module : modules) {
+                ClassLoaderHelper.implAddReadsAllUnnamed(module);
+            }
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void close() {
     }

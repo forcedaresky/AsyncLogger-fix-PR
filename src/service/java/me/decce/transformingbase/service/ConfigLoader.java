@@ -3,7 +3,6 @@ package me.decce.transformingbase.service;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.toml.TomlFormat;
 import me.decce.transformingbase.constants.Constants;
-import me.decce.transformingbase.core.AsyncLoggerConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

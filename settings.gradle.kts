@@ -78,7 +78,7 @@ stonecutter {
             optionallyInclude("forge", "archloom", versions)
         }
         
-        fabric (listOf("1.21.11"))
+        fabric (listOf("1.21.11", "1.20.1"))
         neoforge (listOf("1.21.11", "1.21.1"))
         forge (listOf("1.20.1"))
 
