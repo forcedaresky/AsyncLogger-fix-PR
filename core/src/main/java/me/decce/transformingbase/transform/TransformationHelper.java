@@ -18,6 +18,7 @@ import static me.decce.transformingbase.util.ReflectionHelper.unreflect;
 
 public class TransformationHelper {
     public final MethodHandle IMPL_ADD_READS_ALL_UNNAMED = unreflect(() -> Module.class.getDeclaredMethod("implAddReadsAllUnnamed"));
+    public final MethodHandle IMPL_ADD_READS = unreflect(() -> Module.class.getDeclaredMethod("implAddReads", Module.class));
 
     public final ClassLoader targetClassLoader;
     public final ClassLoader modClassLoader;
@@ -36,6 +37,14 @@ public class TransformationHelper {
             throw new RuntimeException(e);
         }
     }
+
+//    public void expandModuleReads(Module thisModule, Module thatModule) {
+//        try {
+//            IMPL_ADD_READS.invokeExact(thisModule, thatModule);
+//        } catch (Throwable e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public void setup(Instrumentation instrumentation, boolean retransform, boolean setupNative, TransformerDefinition... additionalTransformers) {
         var transformers = Stream.concat(Arrays.stream(TransformerDefinitions.values()).map(td -> td.definition), Arrays.stream(additionalTransformers)).toList();

@@ -28,10 +28,10 @@ public abstract class ClassLoaderHandler implements AutoCloseable {
         return name.replace(".class", "").replace('/', '.');
     }
 
-    public void loadCoreClasses(Class<?> modClass) {
+    public void loadCoreClasses(Class<?> modClass, String path) {
         int counter = 0;
         var throwable = new RuntimeException();
-        try (var stream = getClassesStream(modClass)) {
+        try (var stream = getClassesStream(modClass, path)) {
             var classesToLoad = new LinkedList<>(stream.filter(p -> !Files.isDirectory(p) && p.toString().endsWith(".class")).toList());
             while (!classesToLoad.isEmpty()) {
                 var clazz = classesToLoad.remove(0);
@@ -48,8 +48,8 @@ public abstract class ClassLoaderHandler implements AutoCloseable {
         }
     }
 
-    protected Stream<Path> getClassesStream(Class<?> modClass) {
-        var resource = modClass.getResource("/me/decce/transformingbase/core");
+    protected Stream<Path> getClassesStream(Class<?> modClass, String path) {
+        var resource = modClass.getResource(path);
         try {
             return walkResource(Objects.requireNonNull(resource).toURI());
         } catch (Throwable t) {
@@ -81,5 +81,5 @@ public abstract class ClassLoaderHandler implements AutoCloseable {
     public void close() {
     }
 
-    public abstract void removeModClassesFromServiceLayer();
+    public abstract void removeModClassesFromServiceLayer(String packageName);
 }

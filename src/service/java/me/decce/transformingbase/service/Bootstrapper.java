@@ -1,7 +1,7 @@
 package me.decce.transformingbase.service;
 
 import me.decce.transformingbase.constants.Constants;
-import me.decce.transformingbase.core.ExampleCore;
+import me.decce.transformingbase.core.AsyncLogger;
 import me.decce.transformingbase.core.LibraryAccessor;
 import me.decce.transformingbase.instrumentation.AgentLoader;
 import me.decce.transformingbase.transform.TransformationHelper;
@@ -9,7 +9,6 @@ import me.decce.transformingbase.transform.TransformerDefinition;
 import net.lenni0451.reflect.Agents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFWErrorCallbackI;
 
 import java.lang.instrument.Instrumentation;
 import java.net.URISyntaxException;
@@ -30,25 +29,35 @@ public class Bootstrapper {
         }
         bootstrapped = true;
 
-        var classLoaderHandler = new ClassLoaderHandlerImpl(GLFWErrorCallbackI.class.getClassLoader(), Bootstrapper.class.getClassLoader());
-        classLoaderHandler.loadCoreClasses(Bootstrapper.class);
-        classLoaderHandler.removeModClassesFromServiceLayer();
+        var classLoaderHandler = new ClassLoaderHandlerImpl(Logger.class.getClassLoader(), Bootstrapper.class.getClassLoader());
+        classLoaderHandler.loadCoreClasses(Bootstrapper.class, "/me/decce/transformingbase/core");
+        classLoaderHandler.close();
+        //? if !fabric {
+        /*classLoaderHandler.loadCoreClasses(Bootstrapper.class, "/com/lmax");
+        classLoaderHandler.close();
+        *///?}
+
+        classLoaderHandler.removeModClassesFromServiceLayer(Constants.CORE_PACKAGE);
+        classLoaderHandler.removeModClassesFromServiceLayer("com.lmax");
 
         var helper = new TransformationHelper(classLoaderHandler.targetClassLoader, classLoaderHandler.modClassLoader);
 
         var openglModule = org.lwjgl.opengl.AMDPinnedMemory.class.getModule();
-        helper.expandModuleReads(openglModule);
+        helper.expandModuleReads(openglModule, Logger.class.getModule(), org.apache.logging.log4j.core.Version.class.getModule());
 
         helper.setup(getInstrumentation(), false, true
                 //? if fabric {
-                /*, new TransformerDefinition("net.fabricmc.loader.impl.launch.knot.KnotClassDelegate", me.decce.transformingbase.service.fabric.KnotClassDelegateTransformer.class)
-                *///?}
+                , new TransformerDefinition("net.fabricmc.loader.impl.launch.knot.KnotClassDelegate", me.decce.transformingbase.service.fabric.KnotClassDelegateTransformer.class)
+                 //?}
         );
 
-        classLoaderHandler.close();
 
         initMethodHandles();
         initConfig();
+
+        if (AsyncLogger.config.enabled) {
+            LoggerConfigurator.configure();
+        }
     }
 
     private static Instrumentation getInstrumentation() {
@@ -87,8 +96,8 @@ public class Bootstrapper {
     }
 
     private static void initConfig() {
-        ExampleCore.config = ConfigLoader.load();
-        ConfigLoader.save(ExampleCore.config);
+        AsyncLogger.config = ConfigLoader.load();
+        ConfigLoader.save(AsyncLogger.config);
     }
 
     private static void initMethodHandles() {

@@ -56,6 +56,12 @@ dependencies {
     shade("net.lenni0451:Reflect:1.6.2")
     shade("com.electronwill.night-config:core:3.8.3")
     shade("com.electronwill.night-config:toml:3.8.3")
+    if (stonecutter.eval(mcVersion, ">=1.21.1")) {
+        shade("com.lmax:disruptor:4.0.0")
+    }
+    else {
+        shade("com.lmax:disruptor:3.4.4")
+    }
 }
 
 fun fetchLatestChangelog() : String {
