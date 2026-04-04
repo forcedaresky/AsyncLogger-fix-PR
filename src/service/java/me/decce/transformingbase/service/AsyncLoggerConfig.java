@@ -17,7 +17,7 @@ public class AsyncLoggerConfig {
     public String synchronizeEnqueueWhenQueueFull = "";
     @Comment("Specifies whether System.out and System.err should be redirected to the logger")
     public boolean wrapSysOutSysErr = false;
-    @Comment("When enabled, compares the performance and logs the test results. Will cause a mass amount of messages to be printed at startup.")
+    @Comment("When enabled, compares logging performance without and with AsyncLogger, and logs the test results. Will cause a mass amount of messages to be printed at startup.")
     public boolean testPerformance = false;
 
     @Retention(RetentionPolicy.RUNTIME)

@@ -9,8 +9,21 @@ import java.util.List;
 public class LoggerTester {
     public static List<Result> testAll() {
         var logger = LogManager.getLogger("Test Logger");
+        warmup(logger);
         logger.info("Starting Test");
         return List.of(testString(logger), testPlaceholder(logger), testThrowable(logger));
+    }
+
+    private static void warmup(Logger logger) {
+        for (int i = 0; i < 50; i++) {
+            logger.info("AsyncLogger Warmup Message");
+            logger.info("AsyncLogger Warmup Message {}", "Placeholder");
+            logger.info("AsyncLogger Warmup Message", new TestThrowable());
+        }
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     private static Result testString(Logger logger) {
