@@ -15,6 +15,8 @@ public class AsyncLoggerConfig {
     public String waitStrategy = "";
     @Comment("Specifies the value for log4j2.asyncLoggerSynchronizeEnqueueWhenQueueFull (leave empty for default)")
     public String synchronizeEnqueueWhenQueueFull = "";
+    @Comment("When enabled, compares the performance and logs the test results. Will cause a mass amount of messages to be printed at startup.")
+    public boolean testPerformance = false;
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
