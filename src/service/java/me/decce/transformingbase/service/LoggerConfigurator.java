@@ -35,9 +35,14 @@ public class LoggerConfigurator {
 
         var selector = new BasicAsyncLoggerContextSelector();
         LogManager.setFactory(new Log4jContextFactory(selector));
-        configureSysOutErr();
         var logger = LogManager.getLogger(Constants.MOD_NAME);
-        logger.info("Successfully configured async logger context and wrapped System.out and System.err");
+        if (AsyncLogger.config.wrapSysOutSysErr) {
+            configureSysOutErr();
+            logger.info("Successfully configured async logger context and wrapped System.out and System.err");
+        }
+        else {
+            logger.info("Successfully configured async logger context");
+        }
 
         if (test) {
             after = LoggerTester.testAll();

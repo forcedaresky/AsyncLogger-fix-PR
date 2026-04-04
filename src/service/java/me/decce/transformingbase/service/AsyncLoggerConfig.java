@@ -15,6 +15,8 @@ public class AsyncLoggerConfig {
     public String waitStrategy = "";
     @Comment("Specifies the value for log4j2.asyncLoggerSynchronizeEnqueueWhenQueueFull (leave empty for default)")
     public String synchronizeEnqueueWhenQueueFull = "";
+    @Comment("Specifies whether System.out and System.err should be redirected to the logger")
+    public boolean wrapSysOutSysErr = false;
     @Comment("When enabled, compares the performance and logs the test results. Will cause a mass amount of messages to be printed at startup.")
     public boolean testPerformance = false;
 
