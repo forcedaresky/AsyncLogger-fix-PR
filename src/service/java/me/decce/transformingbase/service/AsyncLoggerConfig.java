@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 public class AsyncLoggerConfig {
     @Comment("Specifies whether to enable the mod")
     public boolean enabled = true;
-    @Comment("Specifies the value for log4j2.asyncLoggerRingBufferSize (0 = use default)")
+    @Comment("Specifies the value for log4j2.asyncLoggerRingBufferSize (0 = use mod default, -1 = use log4j2 default)")
     public int ringBufferSize = 0;
     @Comment("Specifies the value for log4j2.asyncLoggerRingBufferSize (leave empty for default)")
     public String waitStrategy = "";
