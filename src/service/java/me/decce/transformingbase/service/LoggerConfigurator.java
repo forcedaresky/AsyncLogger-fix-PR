@@ -53,7 +53,6 @@ public class LoggerConfigurator {
             for (var result : before) {
                 logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());
             }
-            System.out.println("println");
             logger.info("--- Test Results after applying AsyncLogger ---");
             for (var result : after) {
                 logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());

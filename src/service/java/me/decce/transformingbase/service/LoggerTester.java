@@ -29,7 +29,7 @@ public class LoggerTester {
     private static Result testString(Logger logger) {
         Thread.yield();
         long nano1 = System.nanoTime();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < Item.STRING.count; i++) {
             logger.info("AsyncLogger Test Message");
         }
         long nano2 = System.nanoTime();
@@ -39,7 +39,7 @@ public class LoggerTester {
     private static Result testPlaceholder(Logger logger) {
         Thread.yield();
         long nano1 = System.nanoTime();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < Item.PLACEHOLDER.count; i++) {
             logger.info("{} Message with Placeholder {}", Constants.MOD_NAME, i);
         }
         long nano2 = System.nanoTime();
@@ -50,7 +50,7 @@ public class LoggerTester {
         Thread.yield();
         long nano1 = System.nanoTime();
         var throwable = new TestThrowable();
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < Item.THROWABLE.count; i++) {
             logger.info("Message with Throwable", throwable);
         }
         long nano2 = System.nanoTime();
@@ -58,19 +58,21 @@ public class LoggerTester {
     }
 
     private enum Item {
-        STRING("Simple Messages"),
-        PLACEHOLDER("Messages with Placeholders"),
-        THROWABLE("Messages with Throwable");
+        STRING("Simple Messages", 10000),
+        PLACEHOLDER("Messages with Placeholders", 10000),
+        THROWABLE("Messages with Throwable", 1500);
 
         final String displayName;
+        final int count;
 
-        Item(String displayName) {
+        Item(String displayName, int count) {
             this.displayName = displayName;
+            this.count = count;
         }
 
         @Override
         public String toString() {
-            return displayName;
+            return String.format("%s (%d in total)", displayName, count);
         }
     }
 
