@@ -1,5 +1,9 @@
+## 1.1.0
+
+- Added config options for `formatMsgAsync`, `wrapSysOutSysErr`, and `testPerformance`
+- Include disruptor license file in built jar
+- Added 26.1 support
+
 ## 1.0.0
 
 - Initial release
-
-## 
