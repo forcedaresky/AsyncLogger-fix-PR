@@ -23,6 +23,9 @@ public class LoggerConfigurator {
         if (!config.synchronizeEnqueueWhenQueueFull.isEmpty()) {
             System.setProperty("log4j2.asyncLoggerSynchronizeEnqueueWhenQueueFull", config.synchronizeEnqueueWhenQueueFull);
         }
+        if (!config.formatMsgAsync.isEmpty()) {
+            System.setProperty("log4j2.formatMsgAsync", config.formatMsgAsync);
+        }
     }
 
     static void configure() {
