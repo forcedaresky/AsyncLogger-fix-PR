@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fixed JiJ discovery on Forge (lazyyyyy compatibility)
+
 ## 1.1.0
 
 - Added config options for `formatMsgAsync`, `wrapSysOutSysErr`, and `testPerformance`
