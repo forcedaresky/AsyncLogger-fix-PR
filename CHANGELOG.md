@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Fixed excessive memory usage
+- Fixed a typo in config comment
+
 ## 1.1.1
 
 - Fixed JiJ discovery on Forge (lazyyyyy compatibility)
