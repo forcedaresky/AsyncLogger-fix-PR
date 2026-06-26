@@ -43,7 +43,7 @@ public class AsyncLoggerConfig {
     @Comment("The specified logging levels will be filtered out and not logged. Valid values: TRACE, DEBUG, INFO, WARN, ERROR, FATAL")
     @Key("filtering.levels")
     public List<String> levels = List.of();
-    @Comment("Messages logged by loggers with the specified named will be filtered out and not logged.")
+    @Comment("Messages logged by loggers with the specified names will be filtered out and not logged.")
     @Key("filtering.loggers")
     public List<String> loggers = List.of();
     @Comment("Messages containing the specified substrings will be filtered out and not logged.")
