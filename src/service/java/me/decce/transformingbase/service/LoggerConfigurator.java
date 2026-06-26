@@ -3,6 +3,7 @@ package me.decce.transformingbase.service;
 import me.decce.transformingbase.constants.Constants;
 import me.decce.transformingbase.service.sysout.FilteringPrintStream;
 import me.decce.transformingbase.service.sysout.RedirectingPrintStream;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -108,8 +109,8 @@ public class LoggerConfigurator {
             System.setOut(new RedirectingPrintStream("STDOUT", System.out));
             System.setErr(new RedirectingPrintStream("STDERR", System.err));
         } else if (AsyncLogger.config.filtering && AsyncLogger.config.filterSysOut) {
-            System.setOut(new FilteringPrintStream(System.out, AsyncLogger.filteringInfo));
-            System.setErr(new FilteringPrintStream(System.err, AsyncLogger.filteringInfo));
+            System.setOut(new FilteringPrintStream(System.out, AsyncLogger.filteringInfo, Level.INFO));
+            System.setErr(new FilteringPrintStream(System.err, AsyncLogger.filteringInfo, Level.ERROR));
         }
     }
 }
