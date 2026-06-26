@@ -36,6 +36,10 @@ public class AsyncLoggerConfig {
             "This can avoid creating the LogEvent, at the cost of performing filtering on the caller thread, and not being able to process placeholders properly.")
     @Key("filtering.global")
     public boolean filterGlobal;
+    @Comment("Specifies whether to apply filtering to System.out and System.err.\n" +
+            "Note that if `wrapSysOutSysErr` is disabled, filtering would happen on the caller thread.")
+    @Key("filtering.sysout")
+    public boolean filterSysOut;
     @Comment("The specified logging levels will be filtered out and not logged. Valid values: TRACE, DEBUG, INFO, WARN, ERROR, FATAL")
     @Key("filtering.levels")
     public List<String> levels = List.of();

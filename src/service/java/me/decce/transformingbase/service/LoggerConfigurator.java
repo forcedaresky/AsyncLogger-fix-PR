@@ -1,6 +1,8 @@
 package me.decce.transformingbase.service;
 
 import me.decce.transformingbase.constants.Constants;
+import me.decce.transformingbase.service.sysout.FilteringPrintStream;
+import me.decce.transformingbase.service.sysout.RedirectingPrintStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -57,9 +59,7 @@ public class LoggerConfigurator {
 
         configureRootLogger();
 
-        if (AsyncLogger.config.wrapSysOutSysErr) {
-            configureSysOutErr();
-        }
+        configureSysOutErr();
 
         var logger = LogManager.getLogger(Constants.MOD_NAME);
         logger.info("Successfully configured async logger context with [wrapSysOutSysErr={}, filtering.enabled={}, filtering.global={}]", AsyncLogger.config.wrapSysOutSysErr, AsyncLogger.config.filtering, AsyncLogger.config.filterGlobal);
@@ -94,17 +94,22 @@ public class LoggerConfigurator {
             // https://logging.apache.org/log4j/2.x/manual/filters.html#filtering-process
             if (AsyncLogger.config.filterGlobal) {
                 // Filter in the "Logger" stage (earliest stage)
-                LoggerContext.getContext(false).addFilter(new AsyncFilter());
+                LoggerContext.getContext(false).addFilter(new AsyncFilter(AsyncLogger.filteringInfo));
             }
             else {
                 // Filter in the "LoggerConfig" stage (2nd stage, earliest after LogEvent creation)
-                ((Logger) LogManager.getRootLogger()).addFilter(new AsyncFilter());
+                ((Logger) LogManager.getRootLogger()).addFilter(new AsyncFilter(AsyncLogger.filteringInfo));
             }
         }
     }
 
     private static void configureSysOutErr() {
-        System.setOut(new WrappedPrintStream("STDOUT", System.out));
-        System.setErr(new WrappedPrintStream("STDERR", System.err));
+        if (AsyncLogger.config.wrapSysOutSysErr) {
+            System.setOut(new RedirectingPrintStream("STDOUT", System.out));
+            System.setErr(new RedirectingPrintStream("STDERR", System.err));
+        } else if (AsyncLogger.config.filtering && AsyncLogger.config.filterSysOut) {
+            System.setOut(new FilteringPrintStream(System.out, AsyncLogger.filteringInfo));
+            System.setErr(new FilteringPrintStream(System.err, AsyncLogger.filteringInfo));
+        }
     }
 }
