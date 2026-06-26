@@ -22,6 +22,9 @@ public class Bootstrapper {
         initConfig();
 
         if (AsyncLogger.config.enabled) {
+            if (AsyncLogger.config.filtering) {
+                AsyncLogger.compileFilters();
+            }
             LoggerConfigurator.configure();
         }
     }

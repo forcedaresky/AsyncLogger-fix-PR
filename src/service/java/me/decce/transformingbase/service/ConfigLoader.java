@@ -66,9 +66,13 @@ public class ConfigLoader {
                 if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers) || Modifier.isFinal(modifiers)) {
                     continue;
                 }
-                night.set(field.getName(), field.get(config));
+                String key = field.getName();
+                if (field.isAnnotationPresent(AsyncLoggerConfig.Key.class)) {
+                    key = field.getAnnotation(AsyncLoggerConfig.Key.class).value();
+                }
+                night.set(key, field.get(config));
                 if (field.isAnnotationPresent(AsyncLoggerConfig.Comment.class)) {
-                    night.setComment(field.getName(), field.getAnnotation(AsyncLoggerConfig.Comment.class).value());
+                    night.setComment(key, field.getAnnotation(AsyncLoggerConfig.Comment.class).value());
                 }
             }
         } catch (Exception e) {
@@ -86,8 +90,12 @@ public class ConfigLoader {
                 if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers) || Modifier.isFinal(modifiers)) {
                     continue;
                 }
-                if (night.contains(field.getName())) {
-                    field.set(config, night.get(field.getName()));
+                String key = field.getName();
+                if (field.isAnnotationPresent(AsyncLoggerConfig.Key.class)) {
+                    key = field.getAnnotation(AsyncLoggerConfig.Key.class).value();
+                }
+                if (night.contains(key)) {
+                    field.set(config, night.get(key));
                 }
             }
         } catch (Exception e) {

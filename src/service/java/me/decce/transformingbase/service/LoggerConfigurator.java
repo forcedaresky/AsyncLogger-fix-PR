@@ -2,6 +2,8 @@ package me.decce.transformingbase.service;
 
 import me.decce.transformingbase.constants.Constants;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.async.BasicAsyncLoggerContextSelector;
 import org.apache.logging.log4j.core.impl.Log4jContextFactory;
 
@@ -43,17 +45,24 @@ public class LoggerConfigurator {
         if (test) {
             before = LoggerTester.testAll();
         }
-
         var selector = new BasicAsyncLoggerContextSelector();
         LogManager.setFactory(new Log4jContextFactory(selector));
-        var logger = LogManager.getLogger(Constants.MOD_NAME);
+        if (AsyncLogger.config.filtering) {
+            // https://logging.apache.org/log4j/2.x/manual/filters.html#filtering-process
+            if (AsyncLogger.config.filterGlobal) {
+                // Filter in the "Logger" stage (earliest stage)
+                LoggerContext.getContext(false).addFilter(new AsyncFilter());
+            }
+            else {
+                // Filter in the "LoggerConfig" stage (2nd stage, earliest after LogEvent creation)
+                ((Logger) LogManager.getRootLogger()).addFilter(new AsyncFilter());
+            }
+        }
         if (AsyncLogger.config.wrapSysOutSysErr) {
             configureSysOutErr();
-            logger.info("Successfully configured async logger context and wrapped System.out and System.err");
         }
-        else {
-            logger.info("Successfully configured async logger context");
-        }
+        var logger = LogManager.getLogger(Constants.MOD_NAME);
+        logger.info("Successfully configured async logger context with [wrapSysOutSysErr={}, filtering.enabled={}, filtering.global={}]", AsyncLogger.config.wrapSysOutSysErr, AsyncLogger.config.filtering, AsyncLogger.config.filterGlobal);
 
         if (test) {
             after = LoggerTester.testAll();
