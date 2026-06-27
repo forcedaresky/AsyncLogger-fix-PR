@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "me.decce.asynclogger.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+    "MainMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

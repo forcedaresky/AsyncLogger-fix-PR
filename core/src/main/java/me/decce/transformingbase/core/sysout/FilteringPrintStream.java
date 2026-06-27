@@ -1,7 +1,7 @@
-package me.decce.transformingbase.service.sysout;
+package me.decce.transformingbase.core.sysout;
 
-import me.decce.transformingbase.service.FilterImpl;
-import me.decce.transformingbase.service.FilteringInfo;
+import me.decce.transformingbase.core.FilterImpl;
+import me.decce.transformingbase.core.FilteringInfo;
 import org.apache.logging.log4j.Level;
 
 import java.io.OutputStream;

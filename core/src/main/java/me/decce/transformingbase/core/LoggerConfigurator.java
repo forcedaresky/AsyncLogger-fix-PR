@@ -1,8 +1,8 @@
-package me.decce.transformingbase.service;
+package me.decce.transformingbase.core;
 
 import me.decce.transformingbase.constants.Constants;
-import me.decce.transformingbase.service.sysout.FilteringPrintStream;
-import me.decce.transformingbase.service.sysout.RedirectingPrintStream;
+import me.decce.transformingbase.core.sysout.FilteringPrintStream;
+import me.decce.transformingbase.core.sysout.RedirectingPrintStream;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -12,7 +12,6 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.impl.Log4jContextFactory;
 
 import java.util.List;
-
 
 public class LoggerConfigurator {
     static {
@@ -42,7 +41,7 @@ public class LoggerConfigurator {
         }
     }
 
-    static void configure() {
+    public static void configure() {
         var test = AsyncLogger.config.testPerformance;
         List<LoggerTester.Result> before = null;
         List<LoggerTester.Result> after = null;

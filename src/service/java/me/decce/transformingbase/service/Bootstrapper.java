@@ -1,6 +1,8 @@
 package me.decce.transformingbase.service;
 
 import me.decce.transformingbase.constants.Constants;
+import me.decce.transformingbase.core.AsyncLogger;
+import me.decce.transformingbase.core.LoggerConfigurator;
 import me.decce.transformingbase.util.ClassLoaderHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +26,8 @@ public class Bootstrapper {
                 classLoaderHandler.loadCoreClasses(Bootstrapper.class, "/com/lmax");
             }
             classLoaderHandler.removeModClassesFromServiceLayer("com.lmax");
+            classLoaderHandler.loadCoreClasses(Bootstrapper.class, Constants.CORE_PACKAGE_PATH);
+            classLoaderHandler.removeModClassesFromServiceLayer(Constants.CORE_PACKAGE);
              *///?}
         }
 

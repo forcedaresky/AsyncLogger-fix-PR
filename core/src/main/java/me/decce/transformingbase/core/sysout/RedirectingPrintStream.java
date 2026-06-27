@@ -1,4 +1,4 @@
-package me.decce.transformingbase.service.sysout;
+package me.decce.transformingbase.core.sysout;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

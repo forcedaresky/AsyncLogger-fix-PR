@@ -1,4 +1,4 @@
-package me.decce.transformingbase.service;
+package me.decce.transformingbase.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -61,7 +61,7 @@ public class AsyncLoggerConfig {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    @interface Key {
+    public @interface Key {
         String value();
     }
 }

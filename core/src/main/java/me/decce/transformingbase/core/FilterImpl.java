@@ -1,4 +1,4 @@
-package me.decce.transformingbase.service;
+package me.decce.transformingbase.core;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;

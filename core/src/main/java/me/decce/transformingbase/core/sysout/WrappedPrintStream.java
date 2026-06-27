@@ -1,4 +1,4 @@
-package me.decce.transformingbase.service.sysout;
+package me.decce.transformingbase.core.sysout;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
