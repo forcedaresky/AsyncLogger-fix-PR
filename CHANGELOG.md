@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixed `java.nio.file.ProviderNotFoundException: Provider "jar" not found` crashes with specific mods.
+
 ## 2.0.0
 
 - Implemented asynchronous, efficient filtering
