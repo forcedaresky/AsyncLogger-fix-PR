@@ -13,6 +13,9 @@ import org.apache.logging.log4j.core.async.BasicAsyncLoggerContextSelector;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.impl.Log4jContextFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -117,6 +120,11 @@ public class LoggerConfigurator {
     private static void configureDebugLog(LoggerConfig loggerConfig) {
         if (AsyncLogger.config.noDebugLog) {
             loggerConfig.removeAppender("DebugFile");
+            try {
+                // Attempt to delete the already-generated debug log file
+                // This prevents logs from building up and hence multiple archives of old debug logs being created
+                Files.delete(Paths.get("logs", "debug.log"));
+            } catch (IOException ignored) {}
         }
     }
 
