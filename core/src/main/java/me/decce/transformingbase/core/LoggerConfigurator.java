@@ -1,11 +1,12 @@
-package me.decce.transformingbase.service;
+package me.decce.transformingbase.core;
 
 import me.decce.transformingbase.constants.Constants;
-import me.decce.transformingbase.service.sysout.FilteringPrintStream;
-import me.decce.transformingbase.service.sysout.RedirectingPrintStream;
+import me.decce.transformingbase.core.sysout.FilteringPrintStream;
+import me.decce.transformingbase.core.sysout.RedirectingPrintStream;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.async.BasicAsyncLoggerContextSelector;
@@ -14,7 +15,6 @@ import org.apache.logging.log4j.core.impl.Log4jContextFactory;
 
 import java.util.List;
 import java.util.Map;
-
 
 public class LoggerConfigurator {
     static {
@@ -44,7 +44,7 @@ public class LoggerConfigurator {
         }
     }
 
-    static void configure() {
+    public static void configure() {
         var test = AsyncLogger.config.testPerformance;
         List<LoggerTester.Result> before = null;
         List<LoggerTester.Result> after = null;
@@ -56,8 +56,9 @@ public class LoggerConfigurator {
         // async logger factory. Therefore, we configure both the original root logger and the async one.
         // An example of what this fixes is the "Exiting event polling thread" message from Ixeris.
         configureRootLogger();
-        var originalAppenders = Map.copyOf(getRootLogger().getAppenders());
-        var originalAppenderRefs = getRootLogger().getAppenderRefs();
+        var originalRoot = LoggerContext.getContext(false).getConfiguration().getRootLogger();
+        var originalAppenders = Map.copyOf(originalRoot.getAppenders());
+        var originalAppenderRefs = originalRoot.getAppenderRefs();
 
         var selector = new BasicAsyncLoggerContextSelector();
         LogManager.setFactory(new Log4jContextFactory(selector));
@@ -65,8 +66,9 @@ public class LoggerConfigurator {
         configureRootLogger();
 
         var configuration = LoggerContext.getContext(false).getConfiguration();
+        var root = configuration.getRootLogger();
         for (var entry : originalAppenders.entrySet()) {
-            if (!getRootLogger().getAppenders().containsKey(entry.getKey())) {
+            if (!root.getAppenders().containsKey(entry.getKey())) {
                 if (configuration.getAppender(entry.getKey()) == null) {
                     configuration.addAppender(entry.getValue());
                 }
@@ -74,7 +76,7 @@ public class LoggerConfigurator {
                     entry.getValue().start();
                 }
                 var level = Level.ALL;
-                var filter = (org.apache.logging.log4j.core.Filter) null;
+                var filter = (Filter) null;
                 for (var ref : originalAppenderRefs) {
                     if (ref.getRef().equals(entry.getKey())) {
                         level = ref.getLevel() != null ? ref.getLevel() : Level.ALL;
@@ -82,7 +84,7 @@ public class LoggerConfigurator {
                         break;
                     }
                 }
-                getRootLogger().addAppender(entry.getValue(), level, filter);
+                root.addAppender(entry.getValue(), level, filter);
             }
         }
 
@@ -104,12 +106,8 @@ public class LoggerConfigurator {
         }
     }
 
-    private static LoggerConfig getRootLogger() {
-        return LoggerContext.getContext(false).getConfiguration().getRootLogger();
-    }
-
     private static void configureRootLogger() {
-        var root = getRootLogger();
+        var root = LoggerContext.getContext(false).getConfiguration().getRootLogger();
         configureDebugLog(root);
         configureFilter();
     }
