@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LoggerConfigurator {
+    private static boolean configured;
+
     static {
         var config = AsyncLogger.config;
         if (config.ringBufferSize > 0) {
@@ -84,18 +86,24 @@ public class LoggerConfigurator {
 
         configureSysOutErr();
 
-        var logger = LogManager.getLogger(Constants.MOD_NAME);
-        logger.info("Successfully configured async logger context with [wrapSysOutSysErr={}, filtering.enabled={}, filtering.global={}]", AsyncLogger.config.wrapSysOutSysErr, AsyncLogger.config.filtering, AsyncLogger.config.filterGlobal);
+        if (!configured) {
+            // On Neo 1.21.1 we have to configure the logger twice (see MainMixin), but we only print the message
+            // and do the test once
+            configured = true;
 
-        if (test) {
-            after = LoggerTester.testAll();
-            logger.info("--- Test Results before applying AsyncLogger ---");
-            for (var result : before) {
-                logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());
-            }
-            logger.info("--- Test Results after applying AsyncLogger ---");
-            for (var result : after) {
-                logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());
+            var logger = LogManager.getLogger(Constants.MOD_NAME);
+            logger.info("Successfully configured async logger context with [wrapSysOutSysErr={}, filtering.enabled={}, filtering.global={}]", AsyncLogger.config.wrapSysOutSysErr, AsyncLogger.config.filtering, AsyncLogger.config.filterGlobal);
+
+            if (test) {
+                after = LoggerTester.testAll();
+                logger.info("--- Test Results before applying AsyncLogger ---");
+                for (var result : before) {
+                    logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());
+                }
+                logger.info("--- Test Results after applying AsyncLogger ---");
+                for (var result : after) {
+                    logger.info("{}: {}ms", result.item(), result.elapsedTimeInMs());
+                }
             }
         }
     }
