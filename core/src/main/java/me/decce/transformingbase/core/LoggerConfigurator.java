@@ -119,7 +119,11 @@ public class LoggerConfigurator {
 
     private static void configureDebugLog(LoggerConfig loggerConfig) {
         if (AsyncLogger.config.noDebugLog) {
-            loggerConfig.removeAppender("DebugFile");
+            String name = "DebugFile";
+            if (loggerConfig.getAppenders().containsKey(name)) {
+                loggerConfig.getAppenders().get(name).stop();
+                loggerConfig.removeAppender(name);
+            }
             try {
                 // Attempt to delete the already-generated debug log file
                 // This prevents logs from building up and hence multiple archives of old debug logs being created
