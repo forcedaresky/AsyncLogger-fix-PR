@@ -1,3 +1,7 @@
+## 2.1.1
+
+Fixed `java.nio.file.FileSystemAlreadyExistsException` crash on startup. ([#12](https://github.com/decce6/AsyncLogger/pull/12))
+
 ## 2.1.0
 
 - Fixed mod not working on 1.21.1 NeoForge
