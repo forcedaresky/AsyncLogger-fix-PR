@@ -12,7 +12,7 @@ displayURL = "https://modrinth.com/mod/${modid}"
 logoFile="${modid}.png"
 description = '''${mod_description}'''
 authors = "decce"
-credits = "Asbestosstar, forcedaresky"
+credits = "Asbestosstar, Aresky"
 
 [[dependencies.${modid}]]
 modId = "minecraft"
