@@ -5,6 +5,7 @@ license = "${mod_license}"
 
 [[mods]]
     authors = "decce"
+    credits = "Asbestosstar"
     description = '''${mod_description}'''
     displayName = "${mod_name}"
     displayURL = "https://modrinth.com/mod/${modid}"

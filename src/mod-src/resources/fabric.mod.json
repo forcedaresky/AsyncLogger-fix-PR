@@ -7,6 +7,9 @@
   "authors": [
     "decce"
   ],
+  "contributors": [
+    "Asbestosstar"
+  ],
   "contact": {
     "homepage": "https://modrinth.com/mod/${modid}",
     "sources": "https://github.com/decce6/${modid}",
